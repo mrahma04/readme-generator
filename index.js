@@ -1,8 +1,7 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer')
-
-const generateMarkdown = require('./utils/generateMarkdown')
-
+const generateMarkdown = require('./src/readme-template.js')
+const generateReadme = require('./utils/generate-readme.js')
 // TODO: Create an array of questions for user input
 const questions = [
     {
@@ -37,18 +36,18 @@ const questions = [
     },
     {
         type: 'list',
-        name: 'licenseChoice',
+        name: 'license',
         message: 'Choose a license for your project:',
-        choices: ['Apache License 2.0', 'GNU General Public License (GPL)', 'MIT license']
+        choices: ['GNU GPLv3', 'MIT License']
     },
     {
         type: 'input',
-        name: 'githubId',
+        name: 'github',
         message: 'Enter your GitHub username:'
     },
     {
         type: 'input',
-        name: 'emailAddr',
+        name: 'email',
         message: 'Enter your email address:'
     }
 ];
@@ -58,8 +57,24 @@ function writeToFile(fileName, data) {}
 
 // TODO: Create a function to initialize app
 function init() {
+    // inquirer.prompt(questions)
+    //     .then(answers => {
+    //         const getMdText = generateMarkdown(answers)
+    //         fs.writeFile('README.md', getMdText, err => {
+    //             if (err) {
+    //                 console.log(err)
+    //                 return
+    //             } else {
+    //                 console.log('README.md file generated successfully!')
+    //                 return
+    //             }
+    //         })
+    //     })
+
     inquirer.prompt(questions)
         .then(answers => generateMarkdown(answers))
+        .then(txt => generateReadme.writeFile(txt))
+        .catch(err => console.log(err))
 }
 
 // Function call to initialize app
